@@ -1,8 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { reviewAdded } from "./reviewsSlice";
 import Reviews from "./Reviews";
 
-function ReviewInput() {
-  return <div>Review Input</div>;
-}
+// This component will enable users to create a review
+// associated with a specific restaurant
 
+function ReviewInput({ restaurantId }) {
+  const [comment, setComment] = useState("");
+  const dispatch = useDispatch();
+
+  function handleInputChange(event) {
+    setComment(event.target.value);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    dispatch(reviewAdded({ comment, restaurantId }));
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Comment
+        <textarea name="comment" value={comment} onChange={handleInputChange} />
+      </label>
+      <button type="submit">Add Review</button>
+    </form>
+  );
+}
 export default ReviewInput;
